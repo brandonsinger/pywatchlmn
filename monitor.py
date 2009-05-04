@@ -1,3 +1,4 @@
+# Copyright 2009 Brandon Singer (brandonsinger.com)
 
 """
 Example usage:
@@ -19,13 +20,11 @@ class MonitorStat(object):
     def __init__(self):
         self.server = None
         self.results = {}
-        self.result = None
     def execute(self):
         return "some command"
     def process(self, out, err):
-        self.result = "some results, why=2"
         self.results["why"] = 2
-        return self.result
+        return self.results
     def __str__(self):
         return "description"
 
@@ -40,11 +39,25 @@ class MonitorStatLoad(object):
     def process(self, out, err):
         t = out.split()[:3]
         self.results["1min"], self.results["5min"], self.results["15min"] = t
-        self.result = t
-        return self.result
+        return self.results
 
     def __str__(self):
         return "Load: 1min 5min 15min"
+
+class MonitorStatMemory(object):
+    def __init__(self):
+        self.server = None
+        self.results = {}
+    def execute(self):
+        return "cat /proc/meminfo"
+    def process(self, out, err):
+        for line in out.splitlines():
+            splitted = line.split()
+            self.results[splitted[0]] = splitted[1]
+        
+        return self.results
+    def __str__(self):
+        return "description"
 
 
 class Monitor(object):
