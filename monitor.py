@@ -13,18 +13,35 @@ mon.run()
 import time
 import paramiko
 
+
+class MonitorStat(object):
+    """Monitor Stat classes need to look something like this. But they don't need to subclass it."""
+    def __init__(self):
+        self.server = None
+        self.results = {}
+        self.result = None
+    def execute(self):
+        return "some command"
+    def process(self, out, err):
+        self.result = "some results, why=2"
+        self.results["why"] = 2
+        return self.result
+    def __str__(self):
+        return "description"
+
 class MonitorStatLoad(object):
     def __init__(self):
         self.server = None
-        self.last_results = None
+        self.results = {}
     
     def execute(self):
         return "cat /proc/loadavg"
 
     def process(self, out, err):
-        d = out.split()
-        self.last_results = (d[0], d[1], d[2])
-        return self.last_results
+        t = out.split()[:3]
+        self.results["1min"], self.results["5min"], self.results["15min"] = t
+        self.result = t
+        return self.result
 
     def __str__(self):
         return "Load: 1min 5min 15min"
