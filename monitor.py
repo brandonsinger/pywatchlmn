@@ -5,7 +5,7 @@ Example usage:
 from monitor import Monitor
 from monitor import MonitorStatLoad
 
-mon = Monitor(5)
+mon = Monitor()
 mon.add_server(server_name, host, user, password)
 mon.add_stat(MonitorStatLoad(), server_name)
 mon.run()
@@ -32,15 +32,12 @@ class MonitorStatLoad(object):
     def __init__(self):
         self.server = None
         self.results = {}
-    
     def execute(self):
         return "cat /proc/loadavg"
-
     def process(self, out, err):
         t = out.split()[:3]
         self.results["1min"], self.results["5min"], self.results["15min"] = t
         return self.results
-
     def __str__(self):
         return "Load: 1min 5min 15min"
 
@@ -54,7 +51,6 @@ class MonitorStatMemory(object):
         for line in out.splitlines():
             splitted = line.split()
             self.results[splitted[0]] = splitted[1]
-        
         return self.results
     def __str__(self):
         return "description"

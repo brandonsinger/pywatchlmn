@@ -1,0 +1,6 @@
+This project monitors servers via ssh. Only linux servers are supported. 
+
+Why use pyWatchLMN:
+-Low requirements (any computer with python, paramiko, and pycrypto 1.9+)
+-Nothing to install on the servers
+-Easy to customize
