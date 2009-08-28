@@ -55,6 +55,18 @@ class MonitorStatMemory(object):
     def __str__(self):
         return "description"
 
+class MonitorHTTPDCount(object):
+    def __init__(self):
+        self.server = None
+        self.results = {}
+    def execute(self):
+        return "ps ax | grep httpd | wc -l"
+    def process(self, out, err):
+        self.results = out.strip()
+        return self.results
+    def __str__(self):
+        return "description"
+
 
 class Monitor(object):
     def __init__(self, delay=15):
